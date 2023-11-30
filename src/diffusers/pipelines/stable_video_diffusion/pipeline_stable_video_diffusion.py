@@ -22,6 +22,7 @@ import torch
 from transformers import CLIPImageProcessor, CLIPVisionModelWithProjection
 
 from ...image_processor import VaeImageProcessor
+from ...loaders import FromSingleFileMixin
 from ...models import AutoencoderKLTemporalDecoder, UNetSpatioTemporalConditionModel
 from ...schedulers import EulerDiscreteScheduler
 from ...utils import BaseOutput, logging
@@ -69,12 +70,15 @@ class StableVideoDiffusionPipelineOutput(BaseOutput):
     frames: Union[List[PIL.Image.Image], np.ndarray]
 
 
-class StableVideoDiffusionPipeline(DiffusionPipeline):
+class StableVideoDiffusionPipeline(DiffusionPipeline, FromSingleFileMixin):
     r"""
     Pipeline to generate video from an input image using Stable Video Diffusion.
 
     This model inherits from [`DiffusionPipeline`]. Check the superclass documentation for the generic methods
     implemented for all pipelines (downloading, saving, running on a particular device, etc.).
+
+    The pipeline also inherits the following loading methods:
+        - [`~loaders.FromSingleFileMixin.from_single_file`] for loading `.ckpt` files
 
     Args:
         vae ([`AutoencoderKL`]):
