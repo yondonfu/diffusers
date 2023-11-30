@@ -204,7 +204,7 @@ class FromSingleFileMixin:
                 and isinstance(controlnet[0], ControlNetModel)
             ):
                 raise ValueError("ControlNet needs to be passed if loading from ControlNet pipeline.")
-        elif "StableDiffusion" in pipeline_name:
+        elif "StableDiffusion" in pipeline_name or pipeline_name == "StableVideoDiffusionPipeline":
             # Model type will be inferred from the checkpoint.
             pass
         elif pipeline_name == "StableUnCLIPPipeline":
