@@ -326,11 +326,16 @@ class UnCLIPImageVariationPipeline(DiffusionPipeline):
 
             if do_classifier_free_guidance:
                 noise_pred_uncond, noise_pred_text = noise_pred.chunk(2)
+                # noise_pred_uncond, _ = noise_pred_uncond.split(latent_model_input.shape[1], dim=1)
+                # noise_pred_text, predicted_variance = noise_pred_text.split(latent_model_input.shape[1], dim=1)
+                noise_pred = noise_pred_uncond + decoder_guidance_scale * (noise_pred_text - noise_pred_uncond)
+                # noise_pred = torch.cat([noise_pred, predicted_variance], dim=1)
+                
+                print(f"noise_pred {noise_pred.shape}")
                 noise_pred_uncond, _ = noise_pred_uncond.split(latent_model_input.shape[1], dim=1)
                 noise_pred_text, predicted_variance = noise_pred_text.split(latent_model_input.shape[1], dim=1)
-                noise_pred = noise_pred_uncond + decoder_guidance_scale * (noise_pred_text - noise_pred_uncond)
-                noise_pred = torch.cat([noise_pred, predicted_variance], dim=1)
-
+                print(f"after noise pred {torch.cat([noise_pred, predicted_variance], dim=1).shape}")
+                
             # if i + 1 == decoder_timesteps_tensor.shape[0]:
             #     prev_timestep = None
             # else:
