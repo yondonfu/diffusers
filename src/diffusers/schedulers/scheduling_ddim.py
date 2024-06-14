@@ -407,6 +407,11 @@ class DDIMScheduler(SchedulerMixin, ConfigMixin):
 
         beta_prod_t = 1 - alpha_prod_t
 
+        print(model_output.shape)
+        print(sample.shape)
+        print(alpha_prod_t.shape)
+        print(beta_prod_t.shape)
+
         # 3. compute predicted original sample from predicted noise also called
         # "predicted x_0" of formula (12) from https://arxiv.org/pdf/2010.02502.pdf
         if self.config.prediction_type == "epsilon":
