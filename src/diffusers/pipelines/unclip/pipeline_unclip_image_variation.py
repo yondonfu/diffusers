@@ -328,14 +328,14 @@ class UnCLIPImageVariationPipeline(DiffusionPipeline):
                 noise_pred = noise_pred_uncond + decoder_guidance_scale * (noise_pred_text - noise_pred_uncond)
                 noise_pred = torch.cat([noise_pred, predicted_variance], dim=1)
 
-            if i + 1 == decoder_timesteps_tensor.shape[0]:
-                prev_timestep = None
-            else:
-                prev_timestep = decoder_timesteps_tensor[i + 1]
+            # if i + 1 == decoder_timesteps_tensor.shape[0]:
+            #     prev_timestep = None
+            # else:
+            #     prev_timestep = decoder_timesteps_tensor[i + 1]
 
             # compute the previous noisy sample x_t -> x_t-1
             decoder_latents = self.decoder_scheduler.step(
-                noise_pred, t, decoder_latents, prev_timestep=prev_timestep, generator=generator
+                noise_pred, t, decoder_latents, generator=generator
             ).prev_sample
 
         decoder_latents = decoder_latents.clamp(-1, 1)
@@ -390,14 +390,14 @@ class UnCLIPImageVariationPipeline(DiffusionPipeline):
                 timestep=t,
             ).sample
 
-            if i + 1 == super_res_timesteps_tensor.shape[0]:
-                prev_timestep = None
-            else:
-                prev_timestep = super_res_timesteps_tensor[i + 1]
+            # if i + 1 == super_res_timesteps_tensor.shape[0]:
+            #     prev_timestep = None
+            # else:
+            #     prev_timestep = super_res_timesteps_tensor[i + 1]
 
             # compute the previous noisy sample x_t -> x_t-1
             super_res_latents = self.super_res_scheduler.step(
-                noise_pred, t, super_res_latents, prev_timestep=prev_timestep, generator=generator
+                noise_pred, t, super_res_latents, generator=generator
             ).prev_sample
 
         image = super_res_latents
