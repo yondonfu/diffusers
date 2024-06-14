@@ -313,7 +313,7 @@ class UnCLIPImageVariationPipeline(DiffusionPipeline):
             # expand the latents if we are doing classifier free guidance
             latent_model_input = torch.cat([decoder_latents] * 2) if do_classifier_free_guidance else decoder_latents
             print(f"decoder before scale_model_input {latent_model_input.shape}")
-            latent_model_input = self.scheduler.scale_model_input(latent_model_input, t)
+            latent_model_input = self.decoder_scheduler.scale_model_input(latent_model_input, t)
             print(f"decoderafter scale_model_input {latent_model_input.shape}")
 
             noise_pred = self.decoder(
@@ -388,7 +388,7 @@ class UnCLIPImageVariationPipeline(DiffusionPipeline):
 
             latent_model_input = torch.cat([super_res_latents, image_upscaled], dim=1)
             print(f"super res before scale_model_input {latent_model_input.shape}")
-            latent_model_input = self.scheduler.scale_model_input(latent_model_input, t)
+            latent_model_input = self.super_res_scheduler.scale_model_input(latent_model_input, t)
             print(f"super res after scale_model_input {latent_model_input.shape}")
 
             noise_pred = unet(
